@@ -57,10 +57,14 @@ export function Navbar() {
                 <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Notification 2</a>
               </div>
             </div>
+
+            {/* Profile Menu on Hover */}
             <div className="relative group">
-              <button className="flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-blue-800 focus:ring-white">
+              <div className="flex items-center space-x-2">
                 <img className="h-8 w-8 rounded-full" src={user?.avatar || 'https://via.placeholder.com/40'} alt={user?.name} />
-              </button>
+                <span className="text-blue-100 font-medium">{user?.name}</span>
+              </div>
+              {/* Dropdown Menu on Hover */}
               <div className="absolute right-0 w-48 mt-2 py-2 bg-white rounded-md shadow-xl z-20 hidden group-hover:block">
                 <div className="px-4 py-2 text-sm text-gray-700">{user?.name}</div>
                 <a href="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
