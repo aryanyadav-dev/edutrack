@@ -1,23 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { 
-  Home, 
-  Calendar, 
-  FileText, 
-  Award,
-  BookOpen,
-  CheckSquare,
-  FileText as FileTextIcon,
-  Upload,
-  Users,
-  Menu,
-  X
-} from 'lucide-react';
+import { Home, Calendar, FileText, Award, BookOpen, CheckSquare, Upload, Users } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 export function Sidebar() {
   const { user } = useAuth();
-  const [isCollapsed, setIsCollapsed] = useState(false);
 
   const studentLinks = [
     { to: '/attendance', icon: Calendar, label: 'Attendance' },
@@ -28,7 +15,7 @@ export function Sidebar() {
 
   const professorLinks = [
     { to: '/mark-attendance', icon: CheckSquare, label: 'Mark Attendance' },
-    { to: '/enter-marks', icon: FileTextIcon, label: 'Enter Marks' },
+    { to: '/enter-marks', icon: FileText, label: 'Enter Marks' },
     { to: '/manage-resources', icon: Upload, label: 'Manage Resources' },
     { to: '/students', icon: Users, label: 'Students' },
   ];
@@ -36,56 +23,54 @@ export function Sidebar() {
   const links = user?.role === 'professor' ? professorLinks : studentLinks;
 
   return (
-    <div className={`h-full bg-blue-800 text-white shadow-lg ${isCollapsed ? 'w-12' : 'w-52'} transition-all duration-300`}>
-      <div className="flex justify-between items-center p-4">
-        {/* Toggle Button */}
-        <button 
-          onClick={() => setIsCollapsed(!isCollapsed)} 
-          className="text-white p-2 rounded-full focus:outline-none hover:bg-blue-700"
-        >
-          {isCollapsed ? <X className="h-4 w-4" /> : <Menu className="h-6 w-6" />}
-        </button>
-      </div>
+    <div className="fixed left-0 top-0 h-screen w-56 bg-blue-800 text-white shadow-lg z-10"> {/* Changed w-64 to w-56 */}
+      <div className="flex flex-col h-full">
+        <div className="flex items-center justify-between p-4">
+          <span className="text-xl font-bold">Menu</span>
+        </div>
 
-      <nav className="mt-5 px-2">
-        <div className="space-y-4">
-          {/* Home Link */}
-          <NavLink
-            to="/"
-            className={({ isActive }) =>
-              `group flex items-center px-3 py-3 text-sm font-medium transition-all duration-300 rounded-full ${
-                isActive
-                  ? 'bg-green-500 text-white'
-                  : 'text-gray-400 hover:bg-blue-700 hover:text-white'
-              }`
-            }
-          >
-            <div className="mr-4 flex-shrink-0">
-              <Home className="h-5 w-5" aria-hidden="true" />
-            </div>
-            {!isCollapsed && 'Home'}
-          </NavLink>
-
-          {links.map((link) => (
+        <nav className="flex-grow mt-5 px-2 overflow-y-auto">
+          <div className="space-y-2">
             <NavLink
-              key={link.to}
-              to={link.to}
+              to="/"
               className={({ isActive }) =>
-                `group flex items-center px-3 py-3 text-sm font-medium transition-all duration-300 rounded-full ${
+                `group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
                   isActive
                     ? 'bg-green-500 text-white'
-                    : 'text-gray-400 hover:bg-blue-700 hover:text-white'
+                    : 'text-gray-300 hover:bg-blue-700 hover:text-white'
                 }`
               }
             >
-              <div className="mr-4 flex-shrink-0">
-                <link.icon className="h-5 w-5" aria-hidden="true" />
-              </div>
-              {!isCollapsed && link.label}
+              <Home className="h-5 w-5 mr-3" aria-hidden="true" />
+              <span>Home</span>
             </NavLink>
-          ))}
+
+            {links.map((link) => (
+              <NavLink
+                key={link.to}
+                to={link.to}
+                className={({ isActive }) =>
+                  `group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                    isActive
+                      ? 'bg-green-500 text-white'
+                      : 'text-gray-300 hover:bg-blue-700 hover:text-white'
+                  }`
+                }
+              >
+                <link.icon className="h-5 w-5 mr-3" aria-hidden="true" />
+                <span>{link.label}</span>
+              </NavLink>
+            ))}
+          </div>
+        </nav>
+
+        <div className="p-4">
+          <div className="bg-blue-900 rounded-lg p-3">
+            <div className="font-medium">{user?.name}</div>
+            <div className="text-sm text-gray-400">{user?.role}</div>
+          </div>
         </div>
-      </nav>
+      </div>
     </div>
   );
 }

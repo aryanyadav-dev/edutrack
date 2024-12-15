@@ -1,8 +1,12 @@
 import React from 'react';
-import { Calendar, FileText, Award, BookOpen, Clipboard, Activity, FileText as AssignmentIcon } from 'lucide-react';
+import { Calendar, FileText, Award, BookOpen, Clipboard, Activity, ActivityIcon as AssignmentIcon } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
-export function StudentDashboard() {
+interface StudentDashboardProps {
+  isSidebarCollapsed: boolean;
+}
+
+export function StudentDashboard({ isSidebarCollapsed }: StudentDashboardProps) {
   const stats = [
     { name: 'Attendance', value: '85%', icon: Calendar, color: 'bg-green-100 text-green-600' },
     { name: 'Current CGPA', value: '9.8', icon: FileText, color: 'bg-blue-100 text-blue-600' },
@@ -31,7 +35,7 @@ export function StudentDashboard() {
   ];
 
   return (
-    <div className="bg-gray-50 min-h-screen py-12 px-6 sm:px-10">
+    <div className={`bg-gray-50 min-h-screen py-12 px-6 sm:px-10 transition-all duration-300 ${isSidebarCollapsed ? 'ml-16' : 'ml-64'}`}>
       <div className="max-w-7xl mx-auto">
         <h1 className="text-3xl font-semibold text-gray-900 mb-8">Student Dashboard</h1>
         
@@ -110,7 +114,6 @@ export function StudentDashboard() {
             </div>
           </div>
 
-
           <div className="bg-white shadow-lg rounded-xl p-6">
             <h2 className="text-lg font-semibold text-gray-900 flex items-center">
               <Activity className="mr-2" /> Recent Activities
@@ -132,8 +135,8 @@ export function StudentDashboard() {
           </div>
         </div>
 
-     {/* Upcoming Assignments Section */}
-     <div className="mt-8 flex justify-center">
+        {/* Upcoming Assignments Section */}
+        <div className="mt-8 flex justify-center">
           <div className="bg-white shadow-lg rounded-xl p-6 w-full sm:w-11/12 lg:w-1/2 text-center">
             <h2 className="text-lg font-semibold text-gray-900 flex items-center justify-center">
               <AssignmentIcon className="mr-2" /> Upcoming Assignments
@@ -159,3 +162,4 @@ export function StudentDashboard() {
     </div>
   );
 }
+

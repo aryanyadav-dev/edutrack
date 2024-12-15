@@ -1,14 +1,6 @@
 import React from 'react';
 import { Line } from 'react-chartjs-2';
-import {
-  Users,
-  CheckSquare,
-  FileText,
-  BookOpen,
-  BarChart2,
-  Activity,
-  TrendingUp,
-} from 'lucide-react';
+import { Users, CheckSquare, FileText, BookOpen, BarChart2, Activity, TrendingUp } from 'lucide-react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -22,7 +14,11 @@ import {
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-export function ProfessorDashboard() {
+interface ProfessorDashboardProps {
+  isSidebarCollapsed: boolean;
+}
+
+export function ProfessorDashboard({ isSidebarCollapsed }: ProfessorDashboardProps) {
   const stats = [
     { name: 'Total Students', value: '120', icon: Users, color: 'bg-indigo-100 text-indigo-600' },
     { name: 'Classes Today', value: '4', icon: CheckSquare, color: 'bg-teal-100 text-teal-600' },
@@ -57,7 +53,7 @@ export function ProfessorDashboard() {
   };
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
+    <div className={`p-6 bg-gray-50 min-h-screen transition-all duration-300 ${isSidebarCollapsed ? 'ml-16' : 'ml-64'}`}>
       <h1 className="text-3xl font-semibold text-gray-900 mb-6">Professor Dashboard</h1>
 
       {/* Stats Cards */}
@@ -173,3 +169,4 @@ export function ProfessorDashboard() {
     </div>
   );
 }
+
