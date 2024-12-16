@@ -25,13 +25,11 @@ export function StudentDashboard({ isSidebarCollapsed }: StudentDashboardProps) 
   ];
 
   const cgpaData = [
-    { name: 'Week 1', value: 9.5 },
-    { name: 'Week 2', value: 9.6 },
-    { name: 'Week 3', value: 9.7 },
-    { name: 'Week 4', value: 9.8 },
-    { name: 'Week 5', value: 9.8 },
-    { name: 'Week 6', value: 9.9 },
-    { name: 'Week 7', value: 9.9 },
+    { name: 'Sem 1', value: 9.5 },
+    { name: 'Sem 2', value: 9.6 },
+    { name: 'Sem 3', value: 9.7 },
+    { name: 'Sem 4', value: 9.8 },
+    { name: 'Sem 5', value: 9.8 },
   ];
 
   return (
