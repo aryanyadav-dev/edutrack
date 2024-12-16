@@ -23,7 +23,7 @@ export function Sidebar() {
   const links = user?.role === 'professor' ? professorLinks : studentLinks;
 
   return (
-    <div className="fixed left-0 top-0 h-screen w-56 bg-blue-800 text-white shadow-lg z-10"> {/* Changed w-64 to w-56 */}
+    <div className="fixed left-0 top-0 h-screen w-56 bg-blue-800 text-white shadow-lg z-10"> 
       <div className="flex flex-col h-full">
         <div className="flex items-center justify-between p-4">
           <span className="text-xl font-bold">Menu</span>
