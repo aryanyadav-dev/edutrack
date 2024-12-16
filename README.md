@@ -22,7 +22,7 @@ This project is a web application built using **React.js** and **MongoDB**. It p
 - **Backend:** Node.js with Express.js
 - **Database:** MongoDB
 - **Authentication:** JSON Web Tokens (JWT) for secure login
-- **Styling:** TailwindCSS / Bootstrap (choose one)
+- **Styling:** TailwindCSS 
 
 ---
 
@@ -38,7 +38,7 @@ Ensure you have the following installed:
 1. Clone the repository:
    ```bash
    git clone https://github.com/your-username/edutrack.git
-   cd student-professor-erp
+   cd edutrack
    ```
 
 2. Install dependencies for both frontend and backend:
