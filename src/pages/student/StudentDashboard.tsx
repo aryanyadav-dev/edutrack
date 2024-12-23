@@ -33,14 +33,17 @@ export function StudentDashboard({ isSidebarCollapsed }: StudentDashboardProps) 
   ];
 
   return (
-    <div className={`bg-gray-50 min-h-screen py-12 px-6 sm:px-10 transition-all duration-300 ${isSidebarCollapsed ? 'ml-16' : 'ml-64'}`}>
+    <div className={`shadow-xl shadow-slate-750 bg-gray-50 min-h-screen py-12 px-6 sm:px-10 transition-all duration-300 ${isSidebarCollapsed ? 'ml-16' : 'ml-64'} pt-16`}>
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-semibold text-gray-900 mb-8">Student Dashboard</h1>
-        
+        <h1 className="text-3xl font-bold text-gray-900 mb-8">Student Dashboard</h1>
+
         {/* Stats Section */}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {stats.map((stat) => (
-            <div key={stat.name} className="bg-white shadow-lg rounded-xl overflow-hidden">
+            <div
+              key={stat.name}
+              className="bg-white shadow-lg shadow-slate-300 rounded-xl overflow-hidden transition-transform duration-300 transform hover:scale-105 cursor-pointer"
+            >
               <div className="p-6">
                 <div className="flex items-center">
                   <div className={`flex-shrink-0 p-3 rounded-full ${stat.color}`}>
@@ -60,7 +63,7 @@ export function StudentDashboard({ isSidebarCollapsed }: StudentDashboardProps) 
 
         {/* Graph Section */}
         <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <div className="bg-white shadow-lg rounded-xl p-6">
+          <div className="bg-white shadow-lg shadow-slate-300 rounded-xl p-6">
             <h2 className="text-lg font-semibold text-gray-900">Attendance Trend</h2>
             <div className="mt-4 h-60">
               <ResponsiveContainer width="100%" height="100%">
@@ -75,7 +78,7 @@ export function StudentDashboard({ isSidebarCollapsed }: StudentDashboardProps) 
             </div>
           </div>
 
-          <div className="bg-white shadow-lg rounded-xl p-6">
+          <div className="bg-white shadow-lg shadow-slate-300 rounded-xl p-6">
             <h2 className="text-lg font-semibold text-gray-900">CGPA Progress</h2>
             <div className="mt-4 h-60">
               <ResponsiveContainer width="100%" height="100%">
@@ -93,14 +96,14 @@ export function StudentDashboard({ isSidebarCollapsed }: StudentDashboardProps) 
 
         {/* Upcoming Classes and Activities Section */}
         <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <div className="bg-white shadow-lg rounded-xl p-6">
+          <div className="bg-white shadow-lg shadow-slate-300 rounded-xl p-6">
             <h2 className="text-lg font-semibold text-gray-900 flex items-center">
               <Clipboard className="mr-2" /> Upcoming Classes
             </h2>
             <div className="mt-4 space-y-4">
               {[{ subject: 'Database Management', time: '10:00 AM' },
-                { subject: 'Computer Networks', time: '11:30 AM' },
-                { subject: 'Data Structures and Algorithms', time: '2:00 PM' }].map(({ subject, time }) => (
+              { subject: 'Computer Networks', time: '11:30 AM' },
+              { subject: 'Data Structures and Algorithms', time: '2:00 PM' }].map(({ subject, time }) => (
                 <div key={subject} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                   <div>
                     <p className="text-sm font-medium text-gray-900">{subject}</p>
@@ -112,7 +115,7 @@ export function StudentDashboard({ isSidebarCollapsed }: StudentDashboardProps) 
             </div>
           </div>
 
-          <div className="bg-white shadow-lg rounded-xl p-6">
+          <div className="bg-white shadow-lg shadow-slate-300 rounded-xl p-6">
             <h2 className="text-lg font-semibold text-gray-900 flex items-center">
               <Activity className="mr-2" /> Recent Activities
             </h2>
@@ -135,7 +138,7 @@ export function StudentDashboard({ isSidebarCollapsed }: StudentDashboardProps) 
 
         {/* Upcoming Assignments Section */}
         <div className="mt-8 flex justify-center">
-          <div className="bg-white shadow-lg rounded-xl p-6 w-full sm:w-11/12 lg:w-1/2 text-center">
+          <div className="bg-white shadow-lg shadow-slate-300 rounded-xl p-6 w-full sm:w-11/12 lg:w-1/2 text-center">
             <h2 className="text-lg font-semibold text-gray-900 flex items-center justify-center">
               <AssignmentIcon className="mr-2" /> Upcoming Assignments
             </h2>
@@ -160,4 +163,3 @@ export function StudentDashboard({ isSidebarCollapsed }: StudentDashboardProps) 
     </div>
   );
 }
-
