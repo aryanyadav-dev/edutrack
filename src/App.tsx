@@ -32,14 +32,15 @@ function Layout({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    const handlePopState = () => {
+    const handlePopState = (event: PopStateEvent) => {
       if (location.pathname === '/dashboard') {
+        event.preventDefault();
         logout();
         navigate('/login');
-        window.history.replaceState(null, '', '/login');
       }
     };
 
+    window.history.pushState(null, '', window.location.pathname);
     window.addEventListener('popstate', handlePopState);
 
     return () => {
@@ -116,3 +117,4 @@ function App() {
 }
 
 export default App;
+

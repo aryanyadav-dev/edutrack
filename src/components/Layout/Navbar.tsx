@@ -69,7 +69,6 @@ export function Navbar() {
                 className="flex items-center space-x-2 cursor-pointer"
                 onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
               >
-                {/* Increased the size of the profile image */}
                 <img className="h-10 w-10 rounded-full" src={user?.avatar || 'https://via.placeholder.com/40'} alt={user?.name} />
                 <span className="text-blue-100 font-medium">{user?.name}</span>
               </div>
