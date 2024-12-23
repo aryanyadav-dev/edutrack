@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { LoginForm } from './components/Auth/LoginForm';
@@ -7,31 +7,45 @@ import { Sidebar } from './components/Layout/Sidebar';
 import { Dashboard } from './pages/Dashboard';
 import { LandingPage } from './components/Landingpage';
 
-// Protect routes that require authentication
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { user } = useAuth();
   return user ? children : <Navigate to="/login" />;
 }
 
-// Public routes are only accessible when not authenticated
 function PublicRoute({ children }: { children: React.ReactNode }) {
   const { user } = useAuth();
   return !user ? children : <Navigate to="/dashboard" />;
 }
 
-// Layout wrapper for authenticated pages
 function Layout({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
-  const location = useLocation();  // Get the current route
+  const location = useLocation();
+  const { logout } = useAuth();
 
-  // Back button handler
   const handleBackClick = () => {
     if (location.pathname === '/dashboard') {
-      navigate('/login'); // Go to login page if on the dashboard
+      logout();
+      navigate('/login');
     } else if (location.pathname === '/login') {
-      navigate('/'); // Go to landing page if on the login page
+      navigate('/');
     }
   };
+
+  useEffect(() => {
+    const handlePopState = () => {
+      if (location.pathname === '/dashboard') {
+        logout();
+        navigate('/login');
+        window.history.replaceState(null, '', '/login');
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [location, navigate, logout]);
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -39,7 +53,6 @@ function Layout({ children }: { children: React.ReactNode }) {
       <div className="flex">
         <Sidebar />
         <main className="flex-1">
-          {/* Show the back button only on the Dashboard and Login pages */}
           {(location.pathname === '/dashboard' || location.pathname === '/login') && (
             <button onClick={handleBackClick} className="mb-4 p-2 bg-blue-500 text-white rounded">
               Back
@@ -52,7 +65,6 @@ function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-// Modified landing page with navigation
 function LandingPageWrapper() {
   const navigate = useNavigate();
   
@@ -68,7 +80,6 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
-          {/* Public routes */}
           <Route
             path="/"
             element={
@@ -85,8 +96,6 @@ function App() {
               </PublicRoute>
             }
           />
-
-          {/* Protected routes */}
           <Route
             path="/*"
             element={
