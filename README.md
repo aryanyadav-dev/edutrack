@@ -1,5 +1,8 @@
 # Student-Professor ERP System
 
+<img width="1462" alt="Screenshot 2024-12-24 at 12 17 01 AM" src="https://github.com/user-attachments/assets/e62ac950-c498-40c0-b31f-5bffb97744f5" />
+
+
 ## Overview
 This project is a web application built using **React.js** and **MongoDB**. It provides role-based access control with authentication, allowing users to log in as either a **Student** or a **Professor**. Depending on the role, users are directed to different dashboards with distinct functionalities.
 
