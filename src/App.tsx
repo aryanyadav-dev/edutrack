@@ -6,7 +6,7 @@ import { Navbar } from './components/Layout/Navbar';
 import { Sidebar } from './components/Layout/Sidebar';
 import { Dashboard } from './pages/Dashboard';
 import { LandingPage } from './components/Landingpage';
-import Projects from './pages/project/Project'; 
+import Projects from './pages/project/Project';
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { user } = useAuth();

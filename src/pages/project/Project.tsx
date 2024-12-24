@@ -20,7 +20,7 @@ const projects: Project[] = [
   {
     title: "Computer Networks",
     description: "A comprehensive platform for students understand about Computer Networks and learn from all the resources.",
-    image: "https://media-hosting.imagekit.io//d1133ae4d67a4316/Screenshot%202024-12-24%20at%2011.01.56%E2%80%AFPM.png?Expires=1735234328&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=N2MZN5KzyA4RrLEGDFu0Xc4r700qmHuCmRYOtkqhEDNGD54Dyv52nOECLBoi1hbARpnV-mYYi1bND9V7TVIHvXUrfnKQ3ryHrf1y2L33x-Vd0fDACM9OOEBtxDjXVcFtpRhKPePHIBBz7R-Pcf~1VEmZroNaU-LwxWcLvBYFNlrhqE7-cQViqaGWycZzMcls7eGRJloNhH8UpS2lTTll7wXNGMoZv3YR8-U-NcKu57e2hJLfZFyqe1JfOQcjHwFTt~5EFK7S-Q-3B1ejMmgwxJiush1bW9mNBAKBvaxL1rRHper6JB-FAfpk3edRUsdIsnx~OTNzv3CEYHZYDW9IDw__",
+    image: "https://i.pinimg.com/736x/b9/0b/ee/b90bee5fc6edbb7783b8a50fb53034cd.jpg",
     url: "https://lms.example.com",
     tags: ["React", "Typescript", "Tailwind CSS"]
   }
