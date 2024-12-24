@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, FileText, Award, BookOpen, CheckSquare, Upload, Users, Menu, PenTool, X, LogOut } from 'lucide-react';
+import { Home, FileText, Award, BookOpen, CheckSquare, Upload, Users, Menu, MessageCircle, X, LogOut } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 export function Sidebar() {
@@ -11,8 +11,8 @@ export function Sidebar() {
     { to: '/dashboard', icon: Home, label: 'Dashboard' },
     { to: '/projects', icon: FileText, label: 'Projects' },
     { to: '/resources', icon: BookOpen, label: 'Resources' },
-    { to: '/marks', icon: PenTool, label: 'Marks' },
-    { to: '/activities', icon: Award, label: 'Co-curricular' },
+    { to: '/community', icon: Users, label: 'Community' },  
+    { to: '/chatbot', icon: MessageCircle, label: 'Chatbot' },  
   ];
 
   const professorLinks = [
@@ -97,4 +97,3 @@ export function Sidebar() {
     </>
   );
 }
-
