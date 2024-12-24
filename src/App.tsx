@@ -1,5 +1,12 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  useNavigate,
+  useLocation,
+} from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { LoginForm } from './components/Auth/LoginForm';
 import { Navbar } from './components/Layout/Navbar';
@@ -7,6 +14,7 @@ import { Sidebar } from './components/Layout/Sidebar';
 import { Dashboard } from './pages/Dashboard';
 import { LandingPage } from './components/Landingpage';
 import Projects from './pages/project/Project';
+import Resources from './pages/resources/Resources';
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { user } = useAuth();
@@ -69,7 +77,7 @@ function Layout({ children }: { children: React.ReactNode }) {
 
 function LandingPageWrapper() {
   const navigate = useNavigate();
-  
+
   const handleSignIn = () => {
     navigate('/login');
   };
@@ -106,6 +114,7 @@ function App() {
                   <Routes>
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/projects" element={<Projects />} />
+                    <Route path="/resources" element={<Resources />} />
                     <Route path="/" element={<Navigate to="/dashboard" />} />
                   </Routes>
                 </Layout>
