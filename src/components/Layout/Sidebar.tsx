@@ -7,7 +7,7 @@ export function Sidebar() {
   const { user } = useAuth();
 
   const studentLinks = [
-    { to: '/attendance', icon: Calendar, label: 'Attendance' },
+    { to: '/projects', icon: FileText, label: 'Projects' },
     { to: '/marks', icon: FileText, label: 'Marks' },
     { to: '/activities', icon: Award, label: 'Co-curricular' },
     { to: '/resources', icon: BookOpen, label: 'Resources' },

@@ -6,6 +6,7 @@ import { Navbar } from './components/Layout/Navbar';
 import { Sidebar } from './components/Layout/Sidebar';
 import { Dashboard } from './pages/Dashboard';
 import { LandingPage } from './components/Landingpage';
+import Projects from './pages/project/Project'; 
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { user } = useAuth();
@@ -104,6 +105,7 @@ function App() {
                 <Layout>
                   <Routes>
                     <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/projects" element={<Projects />} />
                     <Route path="/" element={<Navigate to="/dashboard" />} />
                   </Routes>
                 </Layout>
@@ -117,4 +119,3 @@ function App() {
 }
 
 export default App;
-
