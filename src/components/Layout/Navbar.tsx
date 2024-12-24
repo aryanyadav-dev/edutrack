@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, Menu, X, Home, Book, Calendar, Bell, User, Settings } from 'lucide-react';
+import { LogOut, Menu, X, Home, Book, Folder, Bell, User, Settings } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 export function Navbar() {
@@ -16,8 +16,8 @@ export function Navbar() {
 
   const navItems = [
     { icon: Home, label: 'Dashboard', href: '/dashboard' },
-    { icon: Book, label: 'Courses', href: '/courses' },
-    { icon: Calendar, label: 'Schedule', href: '/schedule' },
+    { icon: Book, label: 'Resources', href: '/resources' }, 
+    { icon: Folder, label: 'Projects', href: '/projects' }, 
   ];
 
   return (
