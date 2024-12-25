@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GraduationCap, Mail, Lock } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { Link } from 'react-router-dom';
 
 export function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -74,23 +74,11 @@ export function LoginForm() {
             </div>
           </div>
 
-          {/* Remember Me and Forgot Password */}
+          {/* Forgot Password Link */}
           <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <input
-                id="remember-me"
-                type="checkbox"
-                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-              />
-              <label htmlFor="remember-me" className="ml-2 text-sm text-gray-600">
-                Remember me
-              </label>
-            </div>
-            <a href="/forgot-password" className="text-sm text-indigo-600 hover:text-indigo-500">
+            <Link to="/changepassword" className="text-sm text-indigo-600 hover:text-indigo-500">
               Forgot your password?
-            </a>
+            </Link>
           </div>
 
           {/* Submit Button */}

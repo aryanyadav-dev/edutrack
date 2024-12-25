@@ -1,12 +1,5 @@
 import React, { useEffect } from 'react';
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-  useNavigate,
-  useLocation,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { LoginForm } from './components/Auth/LoginForm';
 import { Navbar } from './components/Layout/Navbar';
@@ -15,6 +8,7 @@ import { Dashboard } from './pages/Dashboard';
 import { LandingPage } from './components/Landingpage';
 import Projects from './pages/project/Project';
 import Resources from './pages/resources/Resources';
+import { ChangePassword } from './components/Auth/Changepassword'; 
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { user } = useAuth();
@@ -103,6 +97,14 @@ function App() {
             element={
               <PublicRoute>
                 <LoginForm />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/changepassword"
+            element={
+              <PublicRoute> 
+                <ChangePassword /> 
               </PublicRoute>
             }
           />
