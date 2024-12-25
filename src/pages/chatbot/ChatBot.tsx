@@ -22,8 +22,8 @@ export function ChatBot() {
       icon: <MessageSquare className="w-5 h-5 text-purple-600" />
     },
     {
-      title: 'Generate an email to reply to a job offer',
-      description: 'Draft a professional and courteous email response for your job offer.',
+      title: 'Solve me a doubt on a topic or subject',
+      description: 'Provide information about a specific topic.',
       icon: <Mail className="w-5 h-5 text-blue-600" />
     },
     {
@@ -32,8 +32,8 @@ export function ChatBot() {
       icon: <FileText className="w-5 h-5 text-green-600" />
     },
     {
-      title: 'How does AI work in a technical capacity',
-      description: 'Learn the fundamentals of how AI operates on a technical level.',
+      title: 'Suggest me some videos or resources to learn OS',
+      description: 'Learn the fundamentals of how OS operates on a technical level.',
       icon: <Settings className="w-5 h-5 text-yellow-600" />
     }
   ]
