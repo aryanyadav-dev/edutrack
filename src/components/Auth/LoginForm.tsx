@@ -17,9 +17,9 @@ export function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-indigo-500 via-blue-400 to-teal-400 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 font-poppins">
-      <div className="max-w-md w-full bg-white rounded-3xl p-8 shadow-lg">
-        <div className="flex flex-col items-center mb-8">
+    <div className="min-h-screen bg-gradient-to-r from-indigo-600 via-blue-500 to-teal-400 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 font-poppins">
+      <div className="max-w-md w-full bg-white rounded-3xl p-10 shadow-lg">
+        <div className="flex flex-col items-center mb-10">
           <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mb-6">
             <GraduationCap className="w-8 h-8 text-indigo-600" />
           </div>
@@ -32,7 +32,6 @@ export function LoginForm() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Email Input */}
           <div className="space-y-2">
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
               Email address
@@ -45,7 +44,7 @@ export function LoginForm() {
                 id="email"
                 type="email"
                 required
-                className="pl-10 w-full p-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-500"
+                className="pl-10 w-full p-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-500"
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -53,7 +52,6 @@ export function LoginForm() {
             </div>
           </div>
 
-          {/* Password Input */}
           <div className="space-y-2">
             <label htmlFor="password" className="block text-sm font-medium text-gray-700">
               Password
@@ -66,7 +64,7 @@ export function LoginForm() {
                 id="password"
                 type="password"
                 required
-                className="pl-10 w-full p-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-500"
+                className="pl-10 w-full p-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-500"
                 placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -74,17 +72,15 @@ export function LoginForm() {
             </div>
           </div>
 
-          {/* Forgot Password Link */}
           <div className="flex items-center justify-between">
             <Link to="/changepassword" className="text-sm text-indigo-600 hover:text-indigo-500">
               Forgot your password?
             </Link>
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white rounded-lg p-3 font-semibold hover:bg-indigo-700 transition-colors"
+            className="w-full bg-indigo-600 text-white rounded-lg p-3 font-semibold focus:ring-2 focus:ring-indigo-500"
           >
             Sign in
           </button>

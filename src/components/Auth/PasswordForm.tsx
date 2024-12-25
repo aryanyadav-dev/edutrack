@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Lock } from 'lucide-react';
+import { Mail } from 'lucide-react';
 import { PasswordInput } from './PasswordInput';
 
 interface PasswordFormProps {

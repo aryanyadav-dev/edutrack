@@ -1,15 +1,22 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Mail, Lock } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { PasswordForm } from './PasswordForm.tsx';
 import { sendPasswordChangeEmail } from '../../utils/emailservice';
 
 export function ChangePassword() {
   const [isSuccess, setIsSuccess] = useState(false);
+  const navigate = useNavigate(); 
 
   const handlePasswordChange = async (email: string) => {
     const emailSent = await sendPasswordChangeEmail(email);
     setIsSuccess(emailSent);
+
+    if (emailSent) {
+      setTimeout(() => {
+        navigate('/login'); 
+      }, 1000); 
+    }
   };
 
   return (
