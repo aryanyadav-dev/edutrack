@@ -6,12 +6,14 @@ import { ChatMessage } from '../../pages/chatbot/ChatMessage';
 import { processMessage } from '../../utils/chatUtils';
 import { Message, MessageType } from '../../types/chat';
 import { Globe } from 'lucide-react'; 
+import { useAuth } from '../../context/AuthContext';
 
 export function ChatBot() {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [isProcessing, setIsProcessing] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const { user } = useAuth();
 
   const suggestedPrompts = [
     {
@@ -82,6 +84,8 @@ export function ChatBot() {
     setMessages([])
   }
 
+  const greeting = `Hi ${user?.displayName || user?.email || 'Guest'}`;
+
   return (
     <div className="flex flex-col h-screen">
       {/* Navbar */}
@@ -110,7 +114,7 @@ export function ChatBot() {
                     {/* Initial Header */}
                     <div className="mb-8">
                       <h1 className="text-2xl font-normal mb-1">
-                        Hi there, <span className="text-purple-600">John</span>
+                        {greeting}
                       </h1>
                       <h2 className="text-2xl font-normal text-purple-600 mb-1">
                         What would you like to know?
