@@ -24,9 +24,9 @@ const DashboardContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow-x: auto;  /* Keep horizontal scroll */
   min-width: 1400px;
   padding: 4rem 0 1.5rem;
+  overflow: visible; /* Removed vertical overflow */
 `;
 
 const ScrollWrapper = styled.div`
