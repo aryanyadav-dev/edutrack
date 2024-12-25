@@ -1,165 +1,214 @@
-import React from 'react';
-import { Calendar, FileText, Award, BookOpen, Clipboard, Activity, ActivityIcon as AssignmentIcon } from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import React, { useState, useEffect } from 'react';
+import { FaQuoteLeft, FaQuoteRight, FaCalendarAlt, FaCheckCircle, FaPlus } from 'react-icons/fa';
+import { Calendar } from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+import { motion } from 'framer-motion';
+import styled from 'styled-components';
 
-interface StudentDashboardProps {
-  isSidebarCollapsed: boolean;
-}
+const motivationalQuotes = [
+  "The beautiful thing about learning is that no one can take it away from you.",
+  "Education is the passport to the future, for tomorrow belongs to those who prepare for it today.",
+  "Success is not the key to happiness. Happiness is the key to success. If you love what you are doing, you will be successful.",
+  "The only way to achieve the impossible is to believe it is possible.",
+  "Don't let what you cannot do interfere with what you can do.",
+  "The journey of a thousand miles begins with one step.",
+  "Believe you can and you're halfway there.",
+  "The future belongs to those who believe in the beauty of their dreams.",
+  "It always seems impossible until it’s done.",
+  "Success is the sum of small efforts, repeated day in and day out."
+];
 
-export function StudentDashboard({ isSidebarCollapsed }: StudentDashboardProps) {
-  const stats = [
-    { name: 'Attendance', value: '85%', icon: Calendar, color: 'bg-green-100 text-green-600' },
-    { name: 'Current CGPA', value: '9.8', icon: FileText, color: 'bg-blue-100 text-blue-600' },
-    { name: 'Activities', value: '5', icon: Award, color: 'bg-purple-100 text-purple-600' },
-    { name: 'Resources', value: '12', icon: BookOpen, color: 'bg-yellow-100 text-yellow-600' },
-  ];
+const DashboardContainer = styled.div`
+  background-color: #f9fafb;
+  height: 100vh;
+  padding: 6rem 1.5rem 2rem;  /* Adjusted padding */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: -10%;
+  right: 15%;
+  bottom: 0;
+  width: 110%;  /* Full width */
+  margin-right: -12%; 
+  overflow: hidden;
+`;
 
-  const attendanceData = [
-    { name: 'Mon', value: 80 },
-    { name: 'Tue', value: 85 },
-    { name: 'Wed', value: 90 },
-    { name: 'Thu', value: 85 },
-    { name: 'Fri', value: 87 },
-    { name: 'Sat', value: 85 },
-    { name: 'Sun', value: 88 },
-  ];
+const GreetingHeader = styled.div`
+  text-align: left;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #111827;
+  width: 100%;
+  max-width: 900px;
+`;
 
-  const cgpaData = [
-    { name: 'Sem 1', value: 9.5 },
-    { name: 'Sem 2', value: 9.6 },
-    { name: 'Sem 3', value: 9.7 },
-    { name: 'Sem 4', value: 9.8 },
-    { name: 'Sem 5', value: 9.8 },
-  ];
+const ContentWrapper = styled.div`
+  max-width: 900px;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  height: calc(100vh - 200px); 
+  display: flex;
+  flex-direction: column;
+`;
+
+const Section = styled.div`
+  margin-bottom: 1.5rem;
+`;
+
+const QuoteSection = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  font-style: italic;
+  color: #4b5563;
+`;
+
+const CalendarTaskSection = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  flex: 1;
+  min-height: 0;
+`;
+
+const CalendarSection = styled.div`
+  background: #f3f4f6;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+`;
+
+const CalendarTitle = styled.h2`
+  font-size: 1.25rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  color: #111827;
+`;
+
+const TaskSection = styled.div`
+  background: #e5e7eb;
+  border-radius: 8px;
+  padding: 1.5rem;
+  flex: 1;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+`;
+
+const TaskInput = styled.div`
+  display: flex;
+  margin-bottom: 1rem;
+`;
+
+const TaskList = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+  flex: 1;
+`;
+
+const TaskItem = styled.li`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+`;
+
+export function StudentDashboard() {
+  const [quote, setQuote] = useState('');
+  const [date, setDate] = useState(new Date());
+  const [tasks, setTasks] = useState([]);
+  const [newTask, setNewTask] = useState('');
+
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * motivationalQuotes.length);
+    setQuote(motivationalQuotes[randomIndex]);
+  }, []);
+
+  const getGreeting = () => {
+    const currentHour = new Date().getHours();
+    if (currentHour < 12) return 'Good Morning';
+    if (currentHour < 18) return 'Good Afternoon';
+    return 'Good Evening';
+  };
+
+  const addTask = () => {
+    if (newTask.trim()) {
+      setTasks([...tasks, newTask]);
+      setNewTask('');
+    }
+  };
+
+  const removeTask = (index) => {
+    setTasks(tasks.filter((_, i) => i !== index));
+  };
 
   return (
-    <div className={`shadow-xl shadow-slate-750 bg-gray-50 min-h-screen py-12 px-6 sm:px-10 transition-all duration-300 ${isSidebarCollapsed ? 'ml-16' : 'ml-64'} pt-16`}>
-      <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">Student Dashboard</h1>
-
-        {/* Stats Section */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {stats.map((stat) => (
-            <div
-              key={stat.name}
-              className="bg-white shadow-lg shadow-slate-300 rounded-xl overflow-hidden transition-transform duration-300 transform hover:scale-105 cursor-pointer"
-            >
-              <div className="p-6">
-                <div className="flex items-center">
-                  <div className={`flex-shrink-0 p-3 rounded-full ${stat.color}`}>
-                    <stat.icon className="h-6 w-6" />
-                  </div>
-                  <div className="ml-4 w-0 flex-1">
-                    <dl>
-                      <dt className="text-sm font-medium text-gray-500">{stat.name}</dt>
-                      <dd className="text-lg font-semibold text-gray-900">{stat.value}</dd>
-                    </dl>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Graph Section */}
-        <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <div className="bg-white shadow-lg shadow-slate-300 rounded-xl p-6">
-            <h2 className="text-lg font-semibold text-gray-900">Attendance Trend</h2>
-            <div className="mt-4 h-60">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={attendanceData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Line type="monotone" dataKey="value" stroke="#4CAF50" strokeWidth={2} />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-
-          <div className="bg-white shadow-lg shadow-slate-300 rounded-xl p-6">
-            <h2 className="text-lg font-semibold text-gray-900">CGPA Progress</h2>
-            <div className="mt-4 h-60">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={cgpaData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Line type="monotone" dataKey="value" stroke="#2196F3" strokeWidth={2} />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-        </div>
-
-        {/* Upcoming Classes and Activities Section */}
-        <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <div className="bg-white shadow-lg shadow-slate-300 rounded-xl p-6">
-            <h2 className="text-lg font-semibold text-gray-900 flex items-center">
-              <Clipboard className="mr-2" /> Upcoming Classes
-            </h2>
-            <div className="mt-4 space-y-4">
-              {[{ subject: 'Database Management', time: '10:00 AM' },
-              { subject: 'Computer Networks', time: '11:30 AM' },
-              { subject: 'Data Structures and Algorithms', time: '2:00 PM' }].map(({ subject, time }) => (
-                <div key={subject} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                  <div>
-                    <p className="text-sm font-medium text-gray-900">{subject}</p>
-                    <p className="text-sm text-gray-500">Room 101</p>
-                  </div>
-                  <span className="text-sm text-gray-500">{time}</span>
-                </div>
+    <DashboardContainer>
+      <GreetingHeader>
+        {getGreeting()}!
+      </GreetingHeader>
+      <ContentWrapper>
+        <Section>
+          <QuoteSection>
+            <FaQuoteLeft style={{ marginRight: '8px', color: '#3b82f6' }} />
+            <p>{quote}</p>
+            <FaQuoteRight style={{ marginLeft: '8px', color: '#3b82f6' }} />
+          </QuoteSection>
+        </Section>
+        <CalendarTaskSection>
+          <CalendarSection>
+            <CalendarTitle>
+              <FaCalendarAlt style={{ marginRight: '8px' }} /> Your Calendar
+            </CalendarTitle>
+            <Calendar onChange={setDate} value={date} className="react-calendar" />
+            <p style={{ marginTop: '1rem', fontSize: '0.875rem', color: '#6b7280' }}>
+              Selected Date: {date.toDateString()}
+            </p>
+          </CalendarSection>
+          <TaskSection>
+            <h3>Tasks</h3>
+            <TaskInput>
+              <input
+                type="text"
+                value={newTask}
+                onChange={(e) => setNewTask(e.target.value)}
+                placeholder="Add a new task"
+                style={{ flex: 1, marginRight: '8px', padding: '8px' }}
+              />
+              <button onClick={addTask} style={{ padding: '8px 12px', background: '#3b82f6', color: '#fff', border: 'none', borderRadius: '4px' }}>
+                <FaPlus />
+              </button>
+            </TaskInput>
+            <TaskList>
+              {tasks.map((task, index) => (
+                <TaskItem key={index}>
+                  <span>{task}</span>
+                  <FaCheckCircle style={{ color: '#10b981', cursor: 'pointer' }} onClick={() => removeTask(index)} />
+                </TaskItem>
               ))}
-            </div>
-          </div>
-
-          <div className="bg-white shadow-lg shadow-slate-300 rounded-xl p-6">
-            <h2 className="text-lg font-semibold text-gray-900 flex items-center">
-              <Activity className="mr-2" /> Recent Activities
-            </h2>
-            <div className="mt-4 space-y-4">
-              {[
-                'Submitted Mathematics Assignment',
-                'Attempted DLDCA FA',
-                'Completed DSA Project',
-              ].map((activity, index) => (
-                <div key={index} className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg">
-                  <div className="flex-1">
-                    <p className="text-sm font-medium text-gray-900">{activity}</p>
-                    <p className="text-sm text-gray-500">2 hours ago</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Upcoming Assignments Section */}
-        <div className="mt-8 flex justify-center">
-          <div className="bg-white shadow-lg shadow-slate-300 rounded-xl p-6 w-full sm:w-11/12 lg:w-1/2 text-center">
-            <h2 className="text-lg font-semibold text-gray-900 flex items-center justify-center">
-              <AssignmentIcon className="mr-2" /> Upcoming Assignments
-            </h2>
-            <div className="mt-4 space-y-4">
-              {[
-                { subject: 'Computer Graphics', dueDate: '2024-12-20', description: 'Assignment' },
-                { subject: 'DLDCA', dueDate: '2024-12-22', description: 'Lab Report' },
-                { subject: 'Database Management', dueDate: '2024-12-25', description: 'Project Submission' },
-              ].map((assignment, index) => (
-                <div key={index} className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
-                  <div className={assignment.subject === 'Computer Science' ? "text-center" : "text-left"}>
-                    <p className="text-sm font-medium text-gray-900">{assignment.subject}</p>
-                    <p className="text-sm text-gray-500">{assignment.description}</p>
-                  </div>
-                  <span className="text-sm text-gray-500">{assignment.dueDate}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+            </TaskList>
+          </TaskSection>
+        </CalendarTaskSection>
+      </ContentWrapper>
+    </DashboardContainer>
   );
 }
