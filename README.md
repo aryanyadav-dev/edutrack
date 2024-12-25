@@ -4,7 +4,7 @@
 
 
 ## Overview
-This project is a web application built using **React.js** and **MongoDB**. It provides role-based access control with authentication, allowing users to log in as either a **Student** or a **Professor**. Depending on the role, users are directed to different dashboards with distinct functionalities.
+This project is a web application built using **React.js** and **SQL**. It provides role-based access control with authentication, allowing users to log in as either a **Student** or a **Professor**. Depending on the role, users are directed to different dashboards with distinct functionalities.
 
 ### Key Features
 #### Student Dashboard:
@@ -23,7 +23,7 @@ This project is a web application built using **React.js** and **MongoDB**. It p
 ## Tech Stack
 - **Frontend:** React.js
 - **Backend:** Node.js with Express.js
-- **Database:** MongoDB
+- **Database:** SQL
 - **Authentication:** JSON Web Tokens (JWT) for secure login
 - **Styling:** TailwindCSS 
 
