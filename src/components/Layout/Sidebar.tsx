@@ -37,7 +37,7 @@ export function Sidebar() {
         onClick={() => setIsOpen(!isOpen)}
         aria-label={isOpen ? "Close menu" : "Open menu"}
       >
-        {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+        {isOpen ? <X className="h-8 w-8" /> : <Menu className="h-8 w-8" />} {/* Increased size to h-8 w-8 */}
       </button>
 
       <div
@@ -45,7 +45,7 @@ export function Sidebar() {
           isOpen ? 'translate-x-0' : '-translate-x-full'
         } md:translate-x-0`}
       >
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full pt-14"> {/* Increased padding-top to pt-14 */}
           <div className="flex items-center justify-between p-4 md:mt-0 mt-16">
             <span className="text-lg font-bold">Menu</span>
             <button

@@ -21,9 +21,9 @@ export function Navbar() {
   ];
 
   return (
-    <nav className="sticky top-0 bg-gradient-to-r from-blue-600 to-blue-800 shadow-lg font-roboto">
+    <nav className="fixed top-0 w-full bg-gradient-to-r from-blue-600 to-blue-800 shadow-lg font-roboto z-[10000]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-14"> 
           {/* Logo */}
           <div className="flex items-center ml-8">
             <a href="/" className="flex items-center space-x-2">
@@ -69,7 +69,6 @@ export function Navbar() {
                 className="flex items-center space-x-2 cursor-pointer"
                 onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
               >
-                {/* Increased the size of the profile image */}
                 <img className="h-10 w-10 rounded-full" src={user?.avatar || 'https://via.placeholder.com/40'} alt={user?.name} />
                 <span className="text-blue-100 font-medium">{user?.name}</span>
               </div>
