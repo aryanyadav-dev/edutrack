@@ -9,6 +9,7 @@ import { LandingPage } from './components/Landingpage';
 import Projects from './pages/project/Project';
 import Resources from './pages/resources/Resources';
 import { ChangePassword } from './components/Auth/Changepassword'; 
+import { ChatBot } from './pages/chatbot/ChatBot';
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { user } = useAuth();
@@ -117,6 +118,7 @@ function App() {
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/projects" element={<Projects />} />
                     <Route path="/resources" element={<Resources />} />
+                    <Route path="/chatbot" element={<ChatBot />} />
                     <Route path="/" element={<Navigate to="/dashboard" />} />
                   </Routes>
                 </Layout>
