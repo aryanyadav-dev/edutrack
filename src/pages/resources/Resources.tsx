@@ -103,9 +103,9 @@ export default function Resources() {
         `}
       </style>
 
-      <div className="container mx-auto py-8 px-4 md:ml-[225px]">
+      <div className="container mx-auto py-8 px-4 md:ml-[250px]"> {/* Increased margin-left to 250px */}
         {/* Header Section */}
-        <div className="flex items-center gap-3 mb-8">
+        <div className="flex items-center gap-3 mb-8 mt-12"> {/* Added mt-12 to move header down */}
           <BookOpen className="h-8 w-8 text-blue-600" />
           <h1 className="text-3xl font-bold text-gray-800">Educational Resources</h1>
         </div>

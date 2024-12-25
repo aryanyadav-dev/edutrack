@@ -30,7 +30,7 @@ export default function Projects() {
   return (
     <div className="ml-56 flex-1 pt-12 px-8 bg-gray-50"> 
       <div className="max-w-[calc(100%-2rem)] mx-auto"> 
-        <h1 className="text-2xl font-bold text-gray-900 mb-8">Projects</h1>
+        <h1 className="text-2xl font-bold text-gray-900 mb-8 mt-12">Projects</h1> {/* Added mt-12 to move the header down */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {projects.map((project) => (
             <div 
