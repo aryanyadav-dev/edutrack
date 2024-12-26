@@ -162,6 +162,7 @@ const TaskSection = styled.div`
   width: 350px;
   display: flex;
   flex-direction: column;
+  max-height: 100%;
 `;
 
 const TaskInput = styled.div`
@@ -175,7 +176,7 @@ const TaskList = styled.ul`
   margin: 0;
   flex: 1;
   overflow-y: auto;
-  max-height: 150px;
+  max-height: 300px;
 `;
 
 const TaskItem = styled.li`
@@ -190,7 +191,8 @@ const TaskItem = styled.li`
 `;
 
 const PriorityBadge = styled.span`
-  background-color: ${(props) => (props.priority === 'High' ? '#ef4444' : props.priority === 'Medium' ? '#f59e0b' : '#10b981')};
+  background-color: ${(props) =>
+    props.priority === 'High' ? '#ef4444' : props.priority === 'Medium' ? '#f59e0b' : '#10b981'};
   color: #ffffff;
   padding: 0.2rem 0.4rem;
   border-radius: 3px;
@@ -296,18 +298,17 @@ export function StudentDashboard() {
   };
 
   const addTask = () => {
-    if (newTask.trim()) {
+    if (newTask.trim() && tasks.length < 10) {
       setTasks([...tasks, { text: newTask, priority: taskPriority }]);
       setNewTask('');
       setTaskPriority('Low');
     }
   };
-
   const removeTask = (index) => {
     setTasks(tasks.filter((_, i) => i !== index));
     const newTasksCompleted = tasksCompleted + 1;
     setTasksCompleted(newTasksCompleted);
-    
+
     // Update the task completion data for the current day
     const today = new Date().getDay();
     const updatedData = [...taskCompletionData];
@@ -353,11 +354,13 @@ export function StudentDashboard() {
                     onChange={(e) => setNewTask(e.target.value)}
                     placeholder="Add a new task"
                     style={{ flex: 1, marginRight: '6px', padding: '6px', fontSize: '0.9rem' }}
+                    disabled={tasks.length >= 10}
                   />
                   <select
                     value={taskPriority}
                     onChange={(e) => setTaskPriority(e.target.value)}
                     style={{ marginRight: '6px', padding: '6px', fontSize: '0.9rem' }}
+                    disabled={tasks.length >= 10}
                   >
                     <option value="Low">Low</option>
                     <option value="Medium">Medium</option>
@@ -365,12 +368,20 @@ export function StudentDashboard() {
                   </select>
                   <button
                     onClick={addTask}
-                    style={{ padding: '6px 10px', background: '#3b82f6', color: '#fff', border: 'none', borderRadius: '4px' }}
+                    style={{
+                      padding: '6px 10px',
+                      background: tasks.length >= 10 ? '#d1d5db' : '#3b82f6',
+                      color: '#fff',
+                      border: 'none',
+                      borderRadius: '4px',
+                      cursor: tasks.length >= 10 ? 'not-allowed' : 'pointer',
+                    }}
+                    disabled={tasks.length >= 10}
                   >
                     <FaPlus size={12} />
                   </button>
                 </TaskInput>
-                <TaskList>
+                <TaskList style={{ maxHeight: '300px', overflowY: 'auto' }}>
                   {tasks.map((task, index) => (
                     <TaskItem key={index}>
                       <span>{task.text} <PriorityBadge priority={task.priority}>{task.priority}</PriorityBadge></span>
@@ -381,7 +392,14 @@ export function StudentDashboard() {
                     </TaskItem>
                   ))}
                 </TaskList>
+                {tasks.length >= 10 && (
+                  <p style={{ fontSize: '0.85rem', color: '#ef4444', marginTop: '0.5rem', textAlign: 'center' }}>
+                    Maximum of 10 tasks allowed.
+                  </p>
+                )}
               </TaskSection>
+
+
             </CalendarTaskSection>
           </ContentWrapper>
 
@@ -417,16 +435,16 @@ export function StudentDashboard() {
                   margin={{ top: 5, right: 20, left: 15, bottom: 5 }}
                 >
                   <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="day" tick={{ fontSize: 12 }} />
-                    <YAxis tick={{ fontSize: 12 }} />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="completed" stroke="#3b82f6" strokeWidth={2} />
-                  </LineChart>
-                </div>
-              </ChartContainer>
-            </AnalyticsWrapper>
-          </MainContentWrapper>
+                  <XAxis dataKey="day" tick={{ fontSize: 12 }} />
+                  <YAxis tick={{ fontSize: 12 }} />
+                  <Tooltip />
+                  <Legend />
+                  <Line type="monotone" dataKey="completed" stroke="#3b82f6" strokeWidth={2} />
+                </LineChart>
+              </div>
+            </ChartContainer>
+          </AnalyticsWrapper>
+        </MainContentWrapper>
       </ScrollWrapper>
     </DashboardContainer>
   );
