@@ -241,20 +241,47 @@ const ChartContainer = styled.div`
 export function StudentDashboard() {
   const [quote, setQuote] = useState('');
   const [date, setDate] = useState(new Date());
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState(() => {
+    const savedTasks = localStorage.getItem('tasks');
+    return savedTasks ? JSON.parse(savedTasks) : [];
+  });
   const [newTask, setNewTask] = useState('');
   const [taskPriority, setTaskPriority] = useState('Low');
-  const [tasksCompleted, setTasksCompleted] = useState(0);
+  const [tasksCompleted, setTasksCompleted] = useState(() => {
+    const savedTasksCompleted = localStorage.getItem('tasksCompleted');
+    return savedTasksCompleted ? JSON.parse(savedTasksCompleted) : 0;
+  });
 
-  const [taskCompletionData, setTaskCompletionData] = useState([
-    { day: 'Mon', completed: 0 },
-    { day: 'Tue', completed: 0 },
-    { day: 'Wed', completed: 0 },
-    { day: 'Thu', completed: 0 },
-    { day: 'Fri', completed: 0 },
-    { day: 'Sat', completed: 0 },
-    { day: 'Sun', completed: 0 }
-  ]);
+  const [taskCompletionData, setTaskCompletionData] = useState(() => {
+    const savedCompletionData = localStorage.getItem('taskCompletionData');
+    if (savedCompletionData) {
+      return JSON.parse(savedCompletionData);
+    }
+    return [
+      { day: 'Mon', completed: 0 },
+      { day: 'Tue', completed: 0 },
+      { day: 'Wed', completed: 0 },
+      { day: 'Thu', completed: 0 },
+      { day: 'Fri', completed: 0 },
+      { day: 'Sat', completed: 0 },
+      { day: 'Sun', completed: 0 }
+    ];
+  });
+
+  // Save tasks to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }, [tasks]);
+
+  // Save tasksCompleted to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('tasksCompleted', JSON.stringify(tasksCompleted));
+  }, [tasksCompleted]);
+
+  // Save taskCompletionData to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('taskCompletionData', JSON.stringify(taskCompletionData));
+  }, [taskCompletionData]);
 
   useEffect(() => {
     const randomIndex = Math.floor(Math.random() * motivationalQuotes.length);
@@ -273,20 +300,18 @@ export function StudentDashboard() {
       setTasks([...tasks, { text: newTask, priority: taskPriority }]);
       setNewTask('');
       setTaskPriority('Low');
-      updateTaskCompletionData();
     }
   };
 
   const removeTask = (index) => {
     setTasks(tasks.filter((_, i) => i !== index));
-    setTasksCompleted(tasksCompleted + 1);
-    updateTaskCompletionData();
-  };
-
-  const updateTaskCompletionData = () => {
+    const newTasksCompleted = tasksCompleted + 1;
+    setTasksCompleted(newTasksCompleted);
+    
+    // Update the task completion data for the current day
     const today = new Date().getDay();
     const updatedData = [...taskCompletionData];
-    updatedData[today].completed = tasksCompleted;
+    updatedData[today === 0 ? 6 : today - 1].completed = newTasksCompleted;
     setTaskCompletionData(updatedData);
   };
 
@@ -296,102 +321,102 @@ export function StudentDashboard() {
         {getGreeting()}!
       </GreetingHeader>
       <ScrollWrapper>
-          <MainContentWrapper>
-            <ContentWrapper>
-              <Section>
-                <QuoteSection>
-                  <FaQuoteLeft style={{ marginRight: '6px', color: '#3b82f6', fontSize: '0.9rem' }} />
-                  <p>{quote}</p>
-                  <FaQuoteRight style={{ marginLeft: '6px', color: '#3b82f6', fontSize: '0.9rem' }} />
-                </QuoteSection>
-              </Section>
-              <CalendarTaskSection>
-                <CalendarSection>
-                  <CalendarTitle>
-                    <FaCalendarAlt style={{ marginRight: '6px' }} /> Your Calendar
-                  </CalendarTitle>
-                  <Calendar
-                    onChange={setDate}
-                    value={date}
-                    className="react-calendar"
+        <MainContentWrapper>
+          <ContentWrapper>
+            <Section>
+              <QuoteSection>
+                <FaQuoteLeft style={{ marginRight: '6px', color: '#3b82f6', fontSize: '0.9rem' }} />
+                <p>{quote}</p>
+                <FaQuoteRight style={{ marginLeft: '6px', color: '#3b82f6', fontSize: '0.9rem' }} />
+              </QuoteSection>
+            </Section>
+            <CalendarTaskSection>
+              <CalendarSection>
+                <CalendarTitle>
+                  <FaCalendarAlt style={{ marginRight: '6px' }} /> Your Calendar
+                </CalendarTitle>
+                <Calendar
+                  onChange={setDate}
+                  value={date}
+                  className="react-calendar"
+                />
+                <p style={{ marginTop: '0.75rem', fontSize: '0.8rem', color: '#6b7280', textAlign: 'center' }}>
+                  Selected Date: {date.toDateString()}
+                </p>
+              </CalendarSection>
+              <TaskSection>
+                <h3 style={{ fontSize: '1rem', marginBottom: '0.75rem' }}>Tasks</h3>
+                <TaskInput>
+                  <input
+                    type="text"
+                    value={newTask}
+                    onChange={(e) => setNewTask(e.target.value)}
+                    placeholder="Add a new task"
+                    style={{ flex: 1, marginRight: '6px', padding: '6px', fontSize: '0.9rem' }}
                   />
-                  <p style={{ marginTop: '0.75rem', fontSize: '0.8rem', color: '#6b7280', textAlign: 'center' }}>
-                    Selected Date: {date.toDateString()}
-                  </p>
-                </CalendarSection>
-                <TaskSection>
-                  <h3 style={{ fontSize: '1rem', marginBottom: '0.75rem' }}>Tasks</h3>
-                  <TaskInput>
-                    <input
-                      type="text"
-                      value={newTask}
-                      onChange={(e) => setNewTask(e.target.value)}
-                      placeholder="Add a new task"
-                      style={{ flex: 1, marginRight: '6px', padding: '6px', fontSize: '0.9rem' }}
-                    />
-                    <select
-                      value={taskPriority}
-                      onChange={(e) => setTaskPriority(e.target.value)}
-                      style={{ marginRight: '6px', padding: '6px', fontSize: '0.9rem' }}
-                    >
-                      <option value="Low">Low</option>
-                      <option value="Medium">Medium</option>
-                      <option value="High">High</option>
-                    </select>
-                    <button
-                      onClick={addTask}
-                      style={{ padding: '6px 10px', background: '#3b82f6', color: '#fff', border: 'none', borderRadius: '4px' }}
-                    >
-                      <FaPlus size={12} />
-                    </button>
-                  </TaskInput>
-                  <TaskList>
-                    {tasks.map((task, index) => (
-                      <TaskItem key={index}>
-                        <span>{task.text} <PriorityBadge priority={task.priority}>{task.priority}</PriorityBadge></span>
-                        <FaTimes
-                          style={{ color: '#ef4444', cursor: 'pointer', fontSize: '0.9rem' }}
-                          onClick={() => removeTask(index)}
-                        />
-                      </TaskItem>
-                    ))}
-                  </TaskList>
-                </TaskSection>
-              </CalendarTaskSection>
-            </ContentWrapper>
-
-            <AnalyticsWrapper>
-              <ProgressTitle>
-                <FaChartLine style={{ marginRight: '6px' }} /> Analytics & Progress
-              </ProgressTitle>
-
-              <StatGrid>
-                <StatCard>
-                  <h3>Total Tasks</h3>
-                  <p style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#3b82f6' }}>
-                    {tasks.length}
-                  </p>
-                  <p style={{ fontSize: '0.8rem' }}>Total Tasks</p>
-                </StatCard>
-                <StatCard>
-                  <h3>Tasks Completed</h3>
-                  <p style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#10b981' }}>
-                    {tasksCompleted}
-                  </p>
-                  <p style={{ fontSize: '0.8rem' }}>Completed Tasks</p>
-                </StatCard>
-              </StatGrid>
-
-              <ChartContainer>
-                <h3>Tasks Completion Per Day</h3>
-                <div style={{ width: '100%', height: '220px' }}>
-                  <LineChart
-                    width={450}
-                    height={200}
-                    data={taskCompletionData}
-                    margin={{ top: 5, right: 20, left: 15, bottom: 5 }}
+                  <select
+                    value={taskPriority}
+                    onChange={(e) => setTaskPriority(e.target.value)}
+                    style={{ marginRight: '6px', padding: '6px', fontSize: '0.9rem' }}
                   >
-                    <CartesianGrid strokeDasharray="3 3" />
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                  </select>
+                  <button
+                    onClick={addTask}
+                    style={{ padding: '6px 10px', background: '#3b82f6', color: '#fff', border: 'none', borderRadius: '4px' }}
+                  >
+                    <FaPlus size={12} />
+                  </button>
+                </TaskInput>
+                <TaskList>
+                  {tasks.map((task, index) => (
+                    <TaskItem key={index}>
+                      <span>{task.text} <PriorityBadge priority={task.priority}>{task.priority}</PriorityBadge></span>
+                      <FaTimes
+                        style={{ color: '#ef4444', cursor: 'pointer', fontSize: '0.9rem' }}
+                        onClick={() => removeTask(index)}
+                      />
+                    </TaskItem>
+                  ))}
+                </TaskList>
+              </TaskSection>
+            </CalendarTaskSection>
+          </ContentWrapper>
+
+          <AnalyticsWrapper>
+            <ProgressTitle>
+              <FaChartLine style={{ marginRight: '6px' }} /> Analytics & Progress
+            </ProgressTitle>
+
+            <StatGrid>
+              <StatCard>
+                <h3>Total Tasks</h3>
+                <p style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#3b82f6' }}>
+                  {tasks.length}
+                </p>
+                <p style={{ fontSize: '0.8rem' }}>Total Tasks</p>
+              </StatCard>
+              <StatCard>
+                <h3>Tasks Completed</h3>
+                <p style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#10b981' }}>
+                  {tasksCompleted}
+                </p>
+                <p style={{ fontSize: '0.8rem' }}>Completed Tasks</p>
+              </StatCard>
+            </StatGrid>
+
+            <ChartContainer>
+              <h3>Tasks Completion Per Day</h3>
+              <div style={{ width: '100%', height: '220px' }}>
+                <LineChart
+                  width={450}
+                  height={200}
+                  data={taskCompletionData}
+                  margin={{ top: 5, right: 20, left: 15, bottom: 5 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="day" tick={{ fontSize: 12 }} />
                     <YAxis tick={{ fontSize: 12 }} />
                     <Tooltip />
