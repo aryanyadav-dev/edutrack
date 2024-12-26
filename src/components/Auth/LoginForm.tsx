@@ -17,8 +17,16 @@ export function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-indigo-600 via-blue-500 to-teal-400 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 font-poppins">
-      <div className="max-w-md w-full bg-white rounded-3xl p-10 shadow-lg">
+    <div
+      className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 font-poppins"
+      style={{
+        backgroundImage: `url('background-auth.jpg')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
+      <div className="max-w-md w-full bg-white bg-opacity-90 rounded-3xl p-10 shadow-lg">
         <div className="flex flex-col items-center mb-10">
           <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mb-6">
             <GraduationCap className="w-8 h-8 text-indigo-600" />
