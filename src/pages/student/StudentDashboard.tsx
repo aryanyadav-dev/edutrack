@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaQuoteLeft, FaQuoteRight, FaCalendarAlt, FaPlus, FaTimes, FaChartLine } from 'react-icons/fa';
-import { Calendar } from 'react-calendar';
+import Calendar from 'react-calendar';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import 'react-calendar/dist/Calendar.css';
 import styled from 'styled-components';
@@ -25,16 +25,19 @@ const DashboardContainer = styled.div`
   flex-direction: column;
   align-items: center;
   min-width: 1400px;
-  padding: 4rem 0 1.5rem;
-  overflow: visible; /* Removed vertical overflow */
+  padding: 2rem 0 1rem;
+  overflow: hidden;
 `;
 
 const ScrollWrapper = styled.div`
   width: 100%;
-  overflow-x: auto;  /* Only keep horizontal scrolling */
+  overflow-x: auto;
+  overflow-y: hidden;
   white-space: nowrap;
   display: flex;
   justify-content: center;
+  height: calc(100vh - 5rem);
+  padding-bottom: 1rem;
 
   &::-webkit-scrollbar {
     height: 10px;
@@ -58,9 +61,9 @@ const ScrollWrapper = styled.div`
 const MainContentWrapper = styled.div`
   display: flex;
   gap: 1rem;
-  max-width: 2000px;
+  max-width: 1800px;
   margin: 0 auto;
-  margin-left: 225px; /* Minor adjustment to move content left */
+  margin-left: 225px;
 `;
 
 const GreetingHeader = styled.div`
@@ -72,7 +75,7 @@ const GreetingHeader = styled.div`
   width: 100%;
   max-width: 1600px;
   padding-right: 2rem;
-  margin-left: 420px; /* Moved more to the right */
+  margin-left: 455px;
 `;
 
 const ContentWrapper = styled.div`
@@ -81,19 +84,21 @@ const ContentWrapper = styled.div`
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 1.25rem;
-  height: 100%;
+  height: calc(100% - 2rem);
   display: flex;
   flex-direction: column;
 `;
 
 const AnalyticsWrapper = styled.div`
-  flex: 0 1 40%;
+  flex: 0 1 35%;
   background: #ffffff;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 1.25rem;
-  height: 100%;
-  min-width: 600px;
+  height: calc(100% - 2rem);
+  min-width: 550px;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Section = styled.div`
@@ -114,14 +119,31 @@ const CalendarTaskSection = styled.div`
   justify-content: space-between;
   flex: 1;
   gap: 0.5rem;
+  max-height: calc(100% - 100px);
+  overflow-y: auto;
 `;
 
 const CalendarSection = styled.div`
   background: #f3f4f6;
   border-radius: 8px;
-  padding: 1.25rem;
+  padding: 1rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 400px;
+  width: 350px;
+
+  .react-calendar {
+    border: none;
+    background: transparent;
+    width: 100%;
+  }
+
+  .react-calendar__tile--active {
+    background: #3b82f6;
+    color: white;
+  }
+
+  .react-calendar__tile--now {
+    background: #93c5fd;
+  }
 `;
 
 const CalendarTitle = styled.h2`
@@ -152,6 +174,8 @@ const TaskList = styled.ul`
   padding: 0;
   margin: 0;
   flex: 1;
+  overflow-y: auto;
+  max-height: 150px;
 `;
 
 const TaskItem = styled.li`
@@ -199,6 +223,18 @@ const StatCard = styled.div`
   h3 {
     font-size: 0.9rem;
     margin-bottom: 0.4rem;
+  }
+`;
+
+const ChartContainer = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-top: 2.5rem;
+  
+  h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
   }
 `;
 
@@ -260,108 +296,112 @@ export function StudentDashboard() {
         {getGreeting()}!
       </GreetingHeader>
       <ScrollWrapper>
-        <MainContentWrapper>
-          <ContentWrapper>
-            <Section>
-              <QuoteSection>
-                <FaQuoteLeft style={{ marginRight: '6px', color: '#3b82f6', fontSize: '0.9rem' }} />
-                <p>{quote}</p>
-                <FaQuoteRight style={{ marginLeft: '6px', color: '#3b82f6', fontSize: '0.9rem' }} />
-              </QuoteSection>
-            </Section>
-            <CalendarTaskSection>
-              <CalendarSection>
-                <CalendarTitle>
-                  <FaCalendarAlt style={{ marginRight: '6px' }} /> Your Calendar
-                </CalendarTitle>
-                <Calendar onChange={setDate} value={date} className="react-calendar" />
-                <p style={{ marginTop: '0.75rem', fontSize: '0.8rem', color: '#6b7280' }}>
-                  Selected Date: {date.toDateString()}
-                </p>
-              </CalendarSection>
-              <TaskSection>
-                <h3 style={{ fontSize: '1rem', marginBottom: '0.75rem' }}>Tasks</h3>
-                <TaskInput>
-                  <input
-                    type="text"
-                    value={newTask}
-                    onChange={(e) => setNewTask(e.target.value)}
-                    placeholder="Add a new task"
-                    style={{ flex: 1, marginRight: '6px', padding: '6px', fontSize: '0.9rem' }}
+          <MainContentWrapper>
+            <ContentWrapper>
+              <Section>
+                <QuoteSection>
+                  <FaQuoteLeft style={{ marginRight: '6px', color: '#3b82f6', fontSize: '0.9rem' }} />
+                  <p>{quote}</p>
+                  <FaQuoteRight style={{ marginLeft: '6px', color: '#3b82f6', fontSize: '0.9rem' }} />
+                </QuoteSection>
+              </Section>
+              <CalendarTaskSection>
+                <CalendarSection>
+                  <CalendarTitle>
+                    <FaCalendarAlt style={{ marginRight: '6px' }} /> Your Calendar
+                  </CalendarTitle>
+                  <Calendar
+                    onChange={setDate}
+                    value={date}
+                    className="react-calendar"
                   />
-                  <select
-                    value={taskPriority}
-                    onChange={(e) => setTaskPriority(e.target.value)}
-                    style={{ marginRight: '6px', padding: '6px', fontSize: '0.9rem' }}
+                  <p style={{ marginTop: '0.75rem', fontSize: '0.8rem', color: '#6b7280', textAlign: 'center' }}>
+                    Selected Date: {date.toDateString()}
+                  </p>
+                </CalendarSection>
+                <TaskSection>
+                  <h3 style={{ fontSize: '1rem', marginBottom: '0.75rem' }}>Tasks</h3>
+                  <TaskInput>
+                    <input
+                      type="text"
+                      value={newTask}
+                      onChange={(e) => setNewTask(e.target.value)}
+                      placeholder="Add a new task"
+                      style={{ flex: 1, marginRight: '6px', padding: '6px', fontSize: '0.9rem' }}
+                    />
+                    <select
+                      value={taskPriority}
+                      onChange={(e) => setTaskPriority(e.target.value)}
+                      style={{ marginRight: '6px', padding: '6px', fontSize: '0.9rem' }}
+                    >
+                      <option value="Low">Low</option>
+                      <option value="Medium">Medium</option>
+                      <option value="High">High</option>
+                    </select>
+                    <button
+                      onClick={addTask}
+                      style={{ padding: '6px 10px', background: '#3b82f6', color: '#fff', border: 'none', borderRadius: '4px' }}
+                    >
+                      <FaPlus size={12} />
+                    </button>
+                  </TaskInput>
+                  <TaskList>
+                    {tasks.map((task, index) => (
+                      <TaskItem key={index}>
+                        <span>{task.text} <PriorityBadge priority={task.priority}>{task.priority}</PriorityBadge></span>
+                        <FaTimes
+                          style={{ color: '#ef4444', cursor: 'pointer', fontSize: '0.9rem' }}
+                          onClick={() => removeTask(index)}
+                        />
+                      </TaskItem>
+                    ))}
+                  </TaskList>
+                </TaskSection>
+              </CalendarTaskSection>
+            </ContentWrapper>
+
+            <AnalyticsWrapper>
+              <ProgressTitle>
+                <FaChartLine style={{ marginRight: '6px' }} /> Analytics & Progress
+              </ProgressTitle>
+
+              <StatGrid>
+                <StatCard>
+                  <h3>Total Tasks</h3>
+                  <p style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#3b82f6' }}>
+                    {tasks.length}
+                  </p>
+                  <p style={{ fontSize: '0.8rem' }}>Total Tasks</p>
+                </StatCard>
+                <StatCard>
+                  <h3>Tasks Completed</h3>
+                  <p style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#10b981' }}>
+                    {tasksCompleted}
+                  </p>
+                  <p style={{ fontSize: '0.8rem' }}>Completed Tasks</p>
+                </StatCard>
+              </StatGrid>
+
+              <ChartContainer>
+                <h3>Tasks Completion Per Day</h3>
+                <div style={{ width: '100%', height: '220px' }}>
+                  <LineChart
+                    width={450}
+                    height={200}
+                    data={taskCompletionData}
+                    margin={{ top: 5, right: 20, left: 15, bottom: 5 }}
                   >
-                    <option value="Low">Low</option>
-                    <option value="Medium">Medium</option>
-                    <option value="High">High</option>
-                  </select>
-                  <button
-                    onClick={addTask}
-                    style={{ padding: '6px 10px', background: '#3b82f6', color: '#fff', border: 'none', borderRadius: '4px' }}
-                  >
-                    <FaPlus size={12} />
-                  </button>
-                </TaskInput>
-                <TaskList>
-                  {tasks.map((task, index) => (
-                    <TaskItem key={index}>
-                      <span>{task.text} <PriorityBadge priority={task.priority}>{task.priority}</PriorityBadge></span>
-                      <FaTimes
-                        style={{ color: '#ef4444', cursor: 'pointer', fontSize: '0.9rem' }}
-                        onClick={() => removeTask(index)}
-                      />
-                    </TaskItem>
-                  ))}
-                </TaskList>
-              </TaskSection>
-            </CalendarTaskSection>
-          </ContentWrapper>
-
-          <AnalyticsWrapper>
-            <ProgressTitle>
-              <FaChartLine style={{ marginRight: '6px' }} /> Analytics & Progress
-            </ProgressTitle>
-
-            <StatGrid>
-              <StatCard>
-                <h3>Total Tasks</h3>
-                <p style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#3b82f6' }}>
-                  {tasks.length}
-                </p>
-                <p style={{ fontSize: '0.8rem' }}>Total Tasks</p>
-              </StatCard>
-              <StatCard>
-                <h3>Tasks Completed</h3>
-                <p style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#10b981' }}>
-                  {tasksCompleted}
-                </p>
-                <p style={{ fontSize: '0.8rem' }}>Completed Tasks</p>
-              </StatCard>
-            </StatGrid>
-
-            <div style={{ flex: 1 }}>
-              <h3 style={{ fontSize: '1rem', marginBottom: '0.75rem' }}>Tasks Completion Per Day</h3>
-              <div style={{ width: '100%', height: '250px' }}>
-                <LineChart
-                  width={500}
-                  height={250}
-                  data={taskCompletionData}
-                  margin={{ top: 5, right: 20, left: 15, bottom: 5 }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="day" tick={{ fontSize: 12 }} />
-                  <YAxis tick={{ fontSize: 12 }} />
-                  <Tooltip />
-                  <Legend />
-                  <Line type="monotone" dataKey="completed" stroke="#3b82f6" strokeWidth={2} />
-                </LineChart>
-              </div>
-            </div>
-          </AnalyticsWrapper>
-        </MainContentWrapper>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="day" tick={{ fontSize: 12 }} />
+                    <YAxis tick={{ fontSize: 12 }} />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="completed" stroke="#3b82f6" strokeWidth={2} />
+                  </LineChart>
+                </div>
+              </ChartContainer>
+            </AnalyticsWrapper>
+          </MainContentWrapper>
       </ScrollWrapper>
     </DashboardContainer>
   );
